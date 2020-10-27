@@ -8,13 +8,14 @@ namespace BasicProject_1
 {
     class Program
     {
-        public void SubmitInvitation(ref List<Hamburger> hamburgers, ref List<Salad> salads, Dictionary<string, int> ExtraPrices, Dictionary<int, string> IdxExtra, ref Dictionary<int, string> IdxMeat, ref Dictionary<int, string> IdxBread, ref Dictionary<string, int> ExtraAmount, ref Dictionary<string, int> MeatAmount, ref Dictionary<string, int> BreadAmount,ref Dictionary<int,Worker> IdxWorker)
+        public void SubmitInvitation(ref List<Sauce> sauces, ref List<Hamburger> hamburgers, ref List<Salad> salads, Dictionary<string, int> ExtraPrices, Dictionary<int, string> IdxExtra, ref Dictionary<int, string> IdxMeat, ref Dictionary<int, string> IdxBread, ref Dictionary<string, int> ExtraAmount, ref Dictionary<string, int> MeatAmount, ref Dictionary<string, int> BreadAmount,ref Dictionary<int,Worker> IdxWorker)
         {
             Console.WriteLine("Welcome to Hamburger resturant");
             int contD = new int();
             contD = 1;
             int smeat = new int();
             List<int> sextras = new List<int>();
+            List<Sauce> sMysauces = new List<Sauce>();
             int sbread = new int();
             int contE = new int();
             int HoS = new int();
@@ -59,7 +60,32 @@ namespace BasicProject_1
                         contE = Convert.ToInt32(Console.ReadLine());
                     }
 
-                    hamburgers.Add(new Hamburger(smeat, sextras, sbread));
+                    int contS = new int();
+                    int sSauceIdx = new int();
+                    contS = 1;
+                    while (Convert.ToBoolean(contS))
+                    {
+                        foreach (Sauce value in sauces)
+                        {
+                            if (value.amount > 0)
+                            {
+                                Console.WriteLine("{0} -{1}", value.idx, value.name);
+                            }
+                        }
+                        sSauceIdx=Convert.ToInt32(Console.ReadLine());
+                        foreach (Sauce value in sauces)
+                        {
+                            if (value.idx==sSauceIdx)
+                            {
+                                sMysauces.Add(value);
+                            }
+                        }
+                        Console.WriteLine("add sauce?: 0-No, 1-Yes");
+                        contS = Convert.ToInt32(Console.ReadLine());
+                    }
+
+
+                    hamburgers.Add(new Hamburger(smeat, sextras, sbread,sMysauces));
 
                 }
                 else 
@@ -81,7 +107,32 @@ namespace BasicProject_1
                         contE = Convert.ToInt32(Console.ReadLine());
                     }
 
-                    salads.Add(new Salad(sextras,ssize));
+                    int contS = new int();
+                    int sSauceIdx = new int();
+                    contS = 1;
+                    while (Convert.ToBoolean(contS))
+                    {
+                        foreach (Sauce value in sauces)
+                        {
+                            if (value.amount > 0)
+                            {
+                                Console.WriteLine("{0} -{1}", value.idx, value.name);
+                            }
+                        }
+                        sSauceIdx = Convert.ToInt32(Console.ReadLine());
+                        foreach (Sauce value in sauces)
+                        {
+                            if (value.idx == sSauceIdx)
+                            {
+                                sMysauces.Add(value);
+                            }
+                        }
+                        Console.WriteLine("add sauce?: 0-No, 1-Yes");
+                        contS = Convert.ToInt32(Console.ReadLine());
+                    }
+
+
+                    salads.Add(new Salad(sextras,ssize,sMysauces));
 
                 }
 
@@ -89,6 +140,8 @@ namespace BasicProject_1
 
                 sextras = new List<int>();
                 sextras.Clear();
+                sMysauces = new List<Sauce>();
+                sMysauces.Clear();
                 Console.WriteLine("add diner?: 0-No, 1-Yes");
                 contD = Convert.ToInt32(Console.ReadLine());
             }
@@ -97,13 +150,13 @@ namespace BasicProject_1
             Tprice = 0;
             foreach (Hamburger item in hamburgers)
             {
-                item.ReduceAmmount(ref IdxExtra, ref IdxMeat, ref IdxBread, ref ExtraAmount, ref MeatAmount, ref BreadAmount);
+                item.ReduceAmmount(ref sauces,ref IdxExtra, ref IdxMeat, ref IdxBread, ref ExtraAmount, ref MeatAmount, ref BreadAmount);
                 Tprice += item.price(ExtraPrices, IdxExtra);
             }
 
             foreach (Salad item in salads)
             {
-                item.ReduceAmmount(ref IdxExtra, ref ExtraAmount);
+                item.ReduceAmmount(ref sauces, ref IdxExtra, ref ExtraAmount);
                 Tprice += item.price();
             }
 
@@ -121,7 +174,7 @@ namespace BasicProject_1
 
         }
 
-        public void ManagerRules(ref Dictionary<string, int> ExtraPrices, ref Dictionary<int, string> IdxExtra)
+        public void ManagerRules(ref List<Sauce> sauces,ref Dictionary<string, int> ExtraPrices, ref Dictionary<int, string> IdxExtra)
         {
             int IdxOperation = new int();
             int COperation = new int();
@@ -132,7 +185,7 @@ namespace BasicProject_1
             COperation = 1;
             while (Convert.ToBoolean(COperation))
             {
-                Console.WriteLine("choose operation: 0-change extra prices, 1-new extra");
+                Console.WriteLine("choose operation: 0-change extra prices, 1-new extra, 2-change sauce price, 3- new sauce");
                 IdxOperation = Convert.ToInt32(Console.ReadLine());
                 switch (IdxOperation)
                 {
@@ -156,6 +209,34 @@ namespace BasicProject_1
                         ExtraPrices.Add(NewExtraName, NewExtraPrice);
                         IdxExtra.Add(IdxExtra.Count, NewExtraName);
                         break;
+
+                    case 2:
+                        Console.WriteLine("choose which sauce to change:");
+                        foreach (Sauce value in sauces)
+                        {
+                            Console.WriteLine("{0} -{1}", value.idx, value.name);
+                        }
+                        int SauceChange = new int();
+                        SauceChange = Convert.ToInt32(Console.ReadLine());
+                        Console.WriteLine("new price:");
+                        PriceChange = Convert.ToInt32(Console.ReadLine());
+                        foreach (Sauce value in sauces)
+                        {
+                            if (value.idx == SauceChange)
+                            {
+                                value.price = PriceChange;
+                            }
+                        }
+                        break;
+
+                    case 3:
+                        Console.WriteLine("the name of the new extra:");
+                        NewExtraName = Console.ReadLine();
+                        Console.WriteLine("the price of new extra:");
+                        NewExtraPrice = Convert.ToInt32(Console.ReadLine());
+                        sauces.Add(new Sauce(NewExtraName, sauces.Count, 10, NewExtraPrice));
+                        break;
+
                 }
 
                 Console.WriteLine("add operation?: 0-No, 1-Yes");
@@ -165,12 +246,12 @@ namespace BasicProject_1
 
         }
 
-        public void WorkersRules(ref Dictionary<int, string> IdxExtra, ref Dictionary<int, string> IdxMeat, ref Dictionary<int, string> IdxBread, ref Dictionary<string, int> ExtraAmount, ref Dictionary<string, int> MeatAmount, ref Dictionary<string, int> BreadAmount)
+        public void WorkersRules(ref List<Sauce> sauces,ref Dictionary<int, string> IdxExtra, ref Dictionary<int, string> IdxMeat, ref Dictionary<int, string> IdxBread, ref Dictionary<string, int> ExtraAmount, ref Dictionary<string, int> MeatAmount, ref Dictionary<string, int> BreadAmount)
         {
             int Ckind = new int();
             int AddAmount = new int();
             int CAmount = new int();
-            Console.WriteLine("hello worker, choose kind to add amount: 0-meat, 1-extra, 2-bread");
+            Console.WriteLine("hello worker, choose kind to add amount: 0-meat, 1-extra, 2-bread, 3-sauce");
             Ckind = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine("new amount");
             AddAmount = Convert.ToInt32(Console.ReadLine());
@@ -207,6 +288,22 @@ namespace BasicProject_1
                     CAmount = Convert.ToInt32(Console.ReadLine());
                     BreadAmount[IdxBread[CAmount]] += AddAmount;
                     break;
+
+                case 3:
+                    Console.WriteLine("choose which sauce to add amount:");
+                    foreach (Sauce value in sauces)
+                    {
+                        Console.WriteLine("{0} -{1}", value.idx, value.name);
+                    }
+                    CAmount = Convert.ToInt32(Console.ReadLine());
+                    foreach (Sauce value in sauces)
+                    {
+                        if (value.idx == CAmount)
+                        {
+                            value.amount += AddAmount ;
+                        }
+                    }
+                    break;
             }
         }
 
@@ -240,7 +337,7 @@ namespace BasicProject_1
 
         }
 
-        public void AllSales(List<Hamburger> hamburgers, List<Salad> salads,ref Dictionary<int, string> IdxExtra, ref Dictionary<int, string> IdxMeat, ref Dictionary<int, string> IdxBread) 
+        public void AllSales(List<Hamburger> hamburgers, List<Salad> salads,ref List<Sauce> sauces,ref Dictionary<int, string> IdxExtra, ref Dictionary<int, string> IdxMeat, ref Dictionary<int, string> IdxBread) 
         {
             Console.WriteLine("Hamburgers- {0}", hamburgers.Count);
             Console.WriteLine("Salads- {0}", salads.Count);
@@ -273,6 +370,20 @@ namespace BasicProject_1
                 {
                     ExtraSales[IdxExtra[ext]] = +1;
                 }
+
+                foreach (Sauce sau in item.SauceList)
+                {
+                    foreach (Sauce value in sauces)
+                    {
+                        if (value.idx == sau.idx)
+                        {
+                            value.sales += 1;
+                        }
+                    }
+
+                }
+
+
             }
 
             foreach (Salad item in salads)
@@ -281,6 +392,19 @@ namespace BasicProject_1
                 {
                     ExtraSales[IdxExtra[ext]] = +1;
                 }
+
+                foreach (Sauce sau in item.SauceList)
+                {
+                    foreach (Sauce value in sauces)
+                    {
+                        if (value.idx == sau.idx)
+                        {
+                            value.sales += 1;
+                        }
+                    }
+
+                }
+
             }
 
             //print
@@ -296,6 +420,10 @@ namespace BasicProject_1
             {
                 Console.WriteLine("{0} -{1}", valuePair.Key, valuePair.Value);
             }
+            foreach(Sauce sau in sauces) 
+            {
+                Console.WriteLine("{0} -{1}", sau.name, sau.sales);
+            }
 
 
         }
@@ -304,6 +432,8 @@ namespace BasicProject_1
         {
             List<Hamburger> hamburgers = new List<Hamburger>();
             List<Salad> salads = new List<Salad>();
+            List<Sauce> sauces = new List<Sauce>();
+            sauces.Add(new Sauce("ketchop",0, 10, 0));
             Dictionary<string, int> ExtraPrices = new Dictionary<string, int>();
             ExtraPrices.Add("cucambers", 0);
             ExtraPrices.Add("tomato", 0);
@@ -354,9 +484,9 @@ namespace BasicProject_1
           
             //p.ManageWorker(ref IdxWorker);
 
-            p.SubmitInvitation(ref hamburgers,ref salads,ExtraPrices, IdxExtra, ref IdxMeat, ref IdxBread, ref ExtraAmount, ref MeatAmount, ref BreadAmount, ref IdxWorker);
+            p.SubmitInvitation(ref sauces,ref hamburgers,ref salads,ExtraPrices, IdxExtra, ref IdxMeat, ref IdxBread, ref ExtraAmount, ref MeatAmount, ref BreadAmount, ref IdxWorker);
 
-            p.AllSales(hamburgers, salads, ref IdxExtra, ref IdxMeat, ref IdxBread);
+            p.AllSales(hamburgers, salads,ref sauces, ref IdxExtra, ref IdxMeat, ref IdxBread);
             
         }
     }
