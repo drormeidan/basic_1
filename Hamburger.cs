@@ -14,9 +14,8 @@ public class Hamburger
 	public int meat { get; set; } // 0-meat, 1-lamb, 2-tofo
 	public List<int> extras { get; set; } // 0-cucamber, 1-tomato, 2-lettuce, 3-pickels, 4-onion
 	public int bread { get; set; } // 0- brown, 1-white
-	public int price(Dictionary<string,int> ExtraPrices, Dictionary<int, string> IdxExtra) 
+	public int price(Dictionary<string,int> ExtraPrices, Dictionary<int, string> IdxExtra) // price of hamburger 
 	{
-		//Console.WriteLine(ExtraPrices["tomato"]);
 		int rprice = new int();
 		switch (this.meat) 
 		{
@@ -33,7 +32,6 @@ public class Hamburger
 				break;
 		}
 
-		//Console.WriteLine(this.extras.Count);
 		foreach (int Iextra in this.extras) 
 		{
 			Console.WriteLine(Iextra);
