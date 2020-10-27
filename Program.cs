@@ -8,9 +8,12 @@ namespace BasicProject_1
 {
     class Program
     {
+        // sumbmit invitaion function
         public void SubmitInvitation(ref List<Sauce> sauces, ref List<Hamburger> hamburgers, ref List<Salad> salads, Dictionary<string, int> ExtraPrices, Dictionary<int, string> IdxExtra, ref Dictionary<int, string> IdxMeat, ref Dictionary<int, string> IdxBread, ref Dictionary<string, int> ExtraAmount, ref Dictionary<string, int> MeatAmount, ref Dictionary<string, int> BreadAmount,ref Dictionary<int,Worker> IdxWorker)
         {
             Console.WriteLine("Welcome to Hamburger resturant");
+
+            // declarations
             int contD = new int();
             contD = 1;
             int smeat = new int();
@@ -24,10 +27,13 @@ namespace BasicProject_1
             while (Convert.ToBoolean(contD))
             {
                 Console.WriteLine("0-salad 1-Hamburger");
-                HoS = Convert.ToInt32(Console.ReadLine());
+                HoS = Convert.ToInt32(Console.ReadLine()); // Hamburger or Salad
 
                 if (Convert.ToBoolean(HoS)) 
                 {
+                    // Hamburger
+
+                    // Meat Options
                     foreach (KeyValuePair<int, string> valuePair in IdxMeat)
                     {
                         if (MeatAmount[valuePair.Value] > 0)
@@ -36,7 +42,8 @@ namespace BasicProject_1
                         }
                     }
                     smeat = Convert.ToInt32(Console.ReadLine());
-                    //Console.WriteLine("choose bread: 0- brown, 1-white");
+
+                    // Bread Options
                     foreach (KeyValuePair<int, string> valuePair in IdxBread)
                     {
                         if (BreadAmount[valuePair.Value] > 0)
@@ -45,7 +52,9 @@ namespace BasicProject_1
                         }
                     }
                     sbread = Convert.ToInt32(Console.ReadLine());
-                    contE = 1;
+
+                    // Extras Options
+                    contE = 1; // continue extra
                     while (Convert.ToBoolean(contE))
                     {
                         foreach (KeyValuePair<int, string> valuePair in IdxExtra)
@@ -62,7 +71,7 @@ namespace BasicProject_1
 
                     int contS = new int();
                     int sSauceIdx = new int();
-                    contS = 1;
+                    contS = 1; // continue sauces
                     while (Convert.ToBoolean(contS))
                     {
                         foreach (Sauce value in sauces)
@@ -85,14 +94,18 @@ namespace BasicProject_1
                     }
 
 
+                    // add the invitation to hambuger's list
                     hamburgers.Add(new Hamburger(smeat, sextras, sbread,sMysauces));
 
                 }
                 else 
                 {
+                    // Salad
+                    
+                    // Choose the size of the salad
                     Console.WriteLine("choose size: 0- small, 1-medium, 2-big");
                     ssize = Convert.ToInt32(Console.ReadLine());
-                    contE = 1;
+                    contE = 1; // continue extra
                     while (Convert.ToBoolean(contE))
                     {
                         foreach (KeyValuePair<int, string> valuePair in IdxExtra)
@@ -109,7 +122,7 @@ namespace BasicProject_1
 
                     int contS = new int();
                     int sSauceIdx = new int();
-                    contS = 1;
+                    contS = 1; // continue sauces
                     while (Convert.ToBoolean(contS))
                     {
                         foreach (Sauce value in sauces)
@@ -131,7 +144,7 @@ namespace BasicProject_1
                         contS = Convert.ToInt32(Console.ReadLine());
                     }
 
-
+                    // add the invitation to salad's list
                     salads.Add(new Salad(sextras,ssize,sMysauces));
 
                 }
@@ -142,10 +155,12 @@ namespace BasicProject_1
                 sextras.Clear();
                 sMysauces = new List<Sauce>();
                 sMysauces.Clear();
+
                 Console.WriteLine("add diner?: 0-No, 1-Yes");
-                contD = Convert.ToInt32(Console.ReadLine());
+                contD = Convert.ToInt32(Console.ReadLine()); // continue to new diner
             }
 
+            // Pricing
             int Tprice = new int();
             Tprice = 0;
             foreach (Hamburger item in hamburgers)
@@ -160,6 +175,7 @@ namespace BasicProject_1
                 Tprice += item.price();
             }
 
+            // Serving worker
             Console.WriteLine("submit the serving worker");
             foreach (KeyValuePair<int, Worker> valuePair in IdxWorker)
             {
@@ -169,27 +185,31 @@ namespace BasicProject_1
             servingWorker = Convert.ToInt32(Console.ReadLine());
             IdxWorker[servingWorker].NumInvetation += 1;
 
+            // Total price
             Console.WriteLine("The total price");
             Console.WriteLine(Tprice);
 
         }
 
+        // function of manging the extras and sauces
         public void ManagerRules(ref List<Sauce> sauces,ref Dictionary<string, int> ExtraPrices, ref Dictionary<int, string> IdxExtra)
         {
+            // Declrations
             int IdxOperation = new int();
             int COperation = new int();
             int ExtraChange = new int();
             int PriceChange = new int();
             string NewExtraName = new string("aaa");
             int NewExtraPrice = new int();
-            COperation = 1;
+
+            COperation = 1; // continue to the next operation
             while (Convert.ToBoolean(COperation))
             {
                 Console.WriteLine("choose operation: 0-change extra prices, 1-new extra, 2-change sauce price, 3- new sauce");
                 IdxOperation = Convert.ToInt32(Console.ReadLine());
                 switch (IdxOperation)
                 {
-                    case 0:
+                    case 0: // change extra prices
                         Console.WriteLine("choose which extra to change:");
                         foreach (KeyValuePair<int, string> valuePair in IdxExtra)
                         {
@@ -201,7 +221,7 @@ namespace BasicProject_1
                         ExtraPrices[IdxExtra[ExtraChange]] = PriceChange;
                         break;
 
-                    case 1:
+                    case 1: // add extra
                         Console.WriteLine("the name of the new extra:");
                         NewExtraName = Console.ReadLine();
                         Console.WriteLine("the price of new extra:");
@@ -210,7 +230,7 @@ namespace BasicProject_1
                         IdxExtra.Add(IdxExtra.Count, NewExtraName);
                         break;
 
-                    case 2:
+                    case 2: // change sauces prices
                         Console.WriteLine("choose which sauce to change:");
                         foreach (Sauce value in sauces)
                         {
@@ -229,7 +249,7 @@ namespace BasicProject_1
                         }
                         break;
 
-                    case 3:
+                    case 3: //add new sauce
                         Console.WriteLine("the name of the new extra:");
                         NewExtraName = Console.ReadLine();
                         Console.WriteLine("the price of new extra:");
@@ -246,20 +266,22 @@ namespace BasicProject_1
 
         }
 
+        // function for managing the amounts (for workers)
         public void WorkersRules(ref List<Sauce> sauces,ref Dictionary<int, string> IdxExtra, ref Dictionary<int, string> IdxMeat, ref Dictionary<int, string> IdxBread, ref Dictionary<string, int> ExtraAmount, ref Dictionary<string, int> MeatAmount, ref Dictionary<string, int> BreadAmount)
         {
+            // Declarations
             int Ckind = new int();
             int AddAmount = new int();
             int CAmount = new int();
+
             Console.WriteLine("hello worker, choose kind to add amount: 0-meat, 1-extra, 2-bread, 3-sauce");
             Ckind = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine("new amount");
             AddAmount = Convert.ToInt32(Console.ReadLine());
 
-
             switch (Ckind)
             {
-                case 0:
+                case 0: //meat
                     Console.WriteLine("choose which meat to add amount:");
                     foreach (KeyValuePair<int, string> valuePair in IdxMeat)
                     {
@@ -269,7 +291,7 @@ namespace BasicProject_1
                     MeatAmount[IdxMeat[CAmount]] += AddAmount;
                     break;
 
-                case 1:
+                case 1: //extra
                     Console.WriteLine("choose which extra to add amount:");
                     foreach (KeyValuePair<int, string> valuePair in IdxExtra)
                     {
@@ -279,7 +301,7 @@ namespace BasicProject_1
                     ExtraAmount[IdxExtra[CAmount]] += AddAmount;
                     break;
 
-                case 2:
+                case 2: //bread
                     Console.WriteLine("choose which bread to add amount:");
                     foreach (KeyValuePair<int, string> valuePair in IdxMeat)
                     {
@@ -289,7 +311,7 @@ namespace BasicProject_1
                     BreadAmount[IdxBread[CAmount]] += AddAmount;
                     break;
 
-                case 3:
+                case 3: //sauce
                     Console.WriteLine("choose which sauce to add amount:");
                     foreach (Sauce value in sauces)
                     {
@@ -307,10 +329,11 @@ namespace BasicProject_1
             }
         }
 
+        // function for managing workers (for manager) 
         public void ManageWorker(ref Dictionary<int,Worker> IdxWorker) 
         {
             int HoF = new int(); // hire or fire
-            int Wfire = new int();
+            int Wfire = new int(); // who fire
             Console.WriteLine("0- hire, 1- fire");
             HoF = Convert.ToInt32(Console.ReadLine());
             if (Convert.ToBoolean(HoF)) 
@@ -337,6 +360,7 @@ namespace BasicProject_1
 
         }
 
+        // function for printing all sales (for taxes issues)
         public void AllSales(List<Hamburger> hamburgers, List<Salad> salads,ref List<Sauce> sauces,ref Dictionary<int, string> IdxExtra, ref Dictionary<int, string> IdxMeat, ref Dictionary<int, string> IdxBread) 
         {
             Console.WriteLine("Hamburgers- {0}", hamburgers.Count);
@@ -430,63 +454,78 @@ namespace BasicProject_1
 
         static void Main(string[] args)
         {
+            // declarations
             List<Hamburger> hamburgers = new List<Hamburger>();
             List<Salad> salads = new List<Salad>();
+            
             List<Sauce> sauces = new List<Sauce>();
             sauces.Add(new Sauce("ketchop",0, 10, 0));
+            
+            // extra -> price
             Dictionary<string, int> ExtraPrices = new Dictionary<string, int>();
             ExtraPrices.Add("cucambers", 0);
             ExtraPrices.Add("tomato", 0);
             ExtraPrices.Add("lettuce", 0);
             ExtraPrices.Add("pickels", 0);
             ExtraPrices.Add("onion", 0);
+
+            // idxExtra -> extra
             Dictionary<int, string> IdxExtra = new Dictionary<int, string>();
             IdxExtra.Add(0, "cucambers");
             IdxExtra.Add(1, "tomato");
             IdxExtra.Add(2, "lettuce");
             IdxExtra.Add(3, "pickels");
             IdxExtra.Add(4, "onion");
+
+            // idxMeat -> meat
             Dictionary<int, string> IdxMeat = new Dictionary<int, string>();
             IdxMeat.Add(0, "meat");
             IdxMeat.Add(1, "lamb");
             IdxMeat.Add(2, "tofo");
+
+            // idxBread -> bread
             Dictionary<int, string> IdxBread = new Dictionary<int, string>();
             IdxBread.Add(0, "brown");
             IdxBread.Add(1, "white");
 
+            // idxWorker -> worker
             Dictionary<int, Worker> IdxWorker = new Dictionary<int, Worker>();
-            IdxWorker.Add(0, new Worker("dror meidan", 1));
-            IdxWorker.Add(1, new Worker("ori cohen", 3));
+            IdxWorker.Add(0, new Worker("Dror Meidan", 1));
+            IdxWorker.Add(1, new Worker("Ori Cohen", 3));
 
+            // extra -> amountExtra
             Dictionary<string, int> ExtraAmount = new Dictionary<string, int>();
             foreach (KeyValuePair<int, string> valuePair in IdxExtra)
             {
                 ExtraAmount.Add(valuePair.Value, 10);
             }
 
+            // bread -> amountBread
             Dictionary<string, int> BreadAmount = new Dictionary<string, int>();
             foreach (KeyValuePair<int, string> valuePair in IdxBread)
             {
                 BreadAmount.Add(valuePair.Value, 10);
             }
 
+            // meat -> amountMeat
             Dictionary<string, int> MeatAmount = new Dictionary<string, int>();
             foreach (KeyValuePair<int, string> valuePair in IdxMeat)
             {
                 MeatAmount.Add(valuePair.Value, 10);
             }
 
-
+            // main program- choose which opration the program will do
             Program p = new Program();
-            //p.ManagerRules(ref ExtraPrices, ref IdxExtra);
-            // p.WorkersRules(ref IdxExtra, ref IdxMeat, ref IdxBread, ref ExtraAmount, ref MeatAmount, ref BreadAmount);
 
-          
+            //p.ManagerRules(ref sauces,ref ExtraPrices, ref IdxExtra);
+            
+            //p.WorkersRules(ref sauces, ref IdxExtra, ref IdxMeat, ref IdxBread, ref ExtraAmount, ref MeatAmount, ref BreadAmount);
+
             //p.ManageWorker(ref IdxWorker);
 
-            p.SubmitInvitation(ref sauces,ref hamburgers,ref salads,ExtraPrices, IdxExtra, ref IdxMeat, ref IdxBread, ref ExtraAmount, ref MeatAmount, ref BreadAmount, ref IdxWorker);
+            //p.SubmitInvitation(ref sauces,ref hamburgers,ref salads,ExtraPrices, IdxExtra, ref IdxMeat, ref IdxBread, ref ExtraAmount, ref MeatAmount, ref BreadAmount, ref IdxWorker);
 
-            p.AllSales(hamburgers, salads,ref sauces, ref IdxExtra, ref IdxMeat, ref IdxBread);
+            //p.AllSales(hamburgers, salads,ref sauces, ref IdxExtra, ref IdxMeat, ref IdxBread);
             
         }
     }

@@ -16,7 +16,6 @@ public class Salad
 
 	public int price()
 	{
-		//Console.WriteLine(ExtraPrices["tomato"]);
 		int rprice = new int();
 		switch (this.size)
 		{

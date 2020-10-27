@@ -17,5 +17,4 @@ public class Sauce
 	public int amount { get; set; }
 	public int price { get; set; }
 
-
 }
